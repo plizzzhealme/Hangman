@@ -24,7 +24,7 @@ public class Main {
                 System.out.println("Lose!");
             }
         }
-        System.out.printf("Win rate: %d", winCount * 100 / gamesNumber);
+        System.out.printf("Win rate: %d%%", winCount * 100 / gamesNumber);
     }
 
     private static boolean playGame(String[] wordList) {
@@ -47,6 +47,7 @@ public class Main {
         while (!hiddenWord.equals(answer)) {
             char letter = brain.guessLetter();
             System.out.println(hiddenWord);
+
             if (answer.contains(String.valueOf(letter))) {
                 for (int i = 0; i < answer.length(); i++) {
                     if (answer.charAt(i) == letter) {

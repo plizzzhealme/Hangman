@@ -3,40 +3,45 @@ package hangman;
 import java.util.Arrays;
 
 public class Brain {
-    private static final char[] letters = "etainoshrdlucmfwygpbvkqjxz".toCharArray(); //english letters, frequency order
+
+    /**
+     * English letters, frequency order
+     */
+    private static final char[] letters = "etainoshrdlucmfwygpbvkqjxz".toCharArray();
+    private int currentLetterIndex;
     private String[] dictionary;
     private String hiddenWord;
-    private int currentLetter;
 
     public Brain(String[] wordList, String target) {
         dictionary = wordList;
         hiddenWord = target;
+        rebuildDictionary();
     }
 
     public void setHiddenWord(String hiddenWord) {
         this.hiddenWord = hiddenWord;
+        rebuildDictionary();
     }
 
     public char guessLetter() {
-        rebuildDictionary();
         char result;
 
-        while (!hasLetter(letters[currentLetter])) {
-            currentLetter++;
+        while (!hasLetter(letters[currentLetterIndex])) {
+            currentLetterIndex++;
         }
-        result = letters[currentLetter];
-        currentLetter++;
+        result = letters[currentLetterIndex];
+        currentLetterIndex++;
         return result;
     }
 
     /**
-     * Checks the matching words list whether it contains letter or not
+     * Checks the dictionary whether any word contains the letter or not
      *
-     * @param letter letter to search
-     * @return true of contains
+     * @param letter the letter to search
+     * @return true if contains
      */
     private boolean hasLetter(char letter) {
-        for (int i = currentLetter; i < letters.length; i++) {
+        for (int i = currentLetterIndex; i < letters.length; i++) {
             for (String word : dictionary) {
                 if (word.contains(String.valueOf(letter))) {
                     return true;
@@ -47,7 +52,7 @@ public class Brain {
     }
 
     /**
-     * Rebuilds the dictionary
+     * Rebuilds the dictionary according to hiddenWord pattern
      */
     private void rebuildDictionary() {
         dictionary = Arrays.stream(dictionary).filter(this::isMatches).toArray(String[]::new);
