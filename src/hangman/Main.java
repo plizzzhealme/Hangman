@@ -53,7 +53,7 @@ public class Main {
                         hiddenWord = replace(hiddenWord, i, letter);
                     }
                 }
-                brain.hiddenWord = hiddenWord;
+                brain.setHiddenWord(hiddenWord);
             } else {
                 lifeCount--;
             }

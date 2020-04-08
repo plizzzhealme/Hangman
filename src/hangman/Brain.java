@@ -1,20 +1,20 @@
 package hangman;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Brain {
     private static final char[] letters = "etainoshrdlucmfwygpbvkqjxz".toCharArray(); //english letters, frequency order
-    public final String[] dictionary;
-    public String hiddenWord;
-    List<String> matchingWords;
-    int currentLetter;
+    private String[] dictionary;
+    private String hiddenWord;
+    private int currentLetter;
 
     public Brain(String[] wordList, String target) {
         dictionary = wordList;
         hiddenWord = target;
-        matchingWords = Arrays.asList(dictionary);
+    }
+
+    public void setHiddenWord(String hiddenWord) {
+        this.hiddenWord = hiddenWord;
     }
 
     public char guessLetter() {
@@ -37,7 +37,7 @@ public class Brain {
      */
     private boolean hasLetter(char letter) {
         for (int i = currentLetter; i < letters.length; i++) {
-            for (String word : matchingWords) {
+            for (String word : dictionary) {
                 if (word.contains(String.valueOf(letter))) {
                     return true;
                 }
@@ -47,10 +47,10 @@ public class Brain {
     }
 
     /**
-     * Rebuilds the matching words list
+     * Rebuilds the dictionary
      */
     private void rebuildDictionary() {
-        matchingWords = matchingWords.stream().filter(this::isMatches).collect(Collectors.toList());
+        dictionary = Arrays.stream(dictionary).filter(this::isMatches).toArray(String[]::new);
     }
 
     /**
